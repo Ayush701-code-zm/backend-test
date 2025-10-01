@@ -73,31 +73,33 @@ sudo mkdir -p /var/www/crud-backend
 sudo chown -R $USER:$USER /var/www/crud-backend
 ```
 
-### Upload Your Code
+### Upload Your Code (Correct pathing)
 
 ```bash
-# Navigate to app directory
+# Navigate to deployment root
 cd /var/www/crud-backend
 
-# Clone your repository (replace with your actual repo)
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git .
+# Clone your repository (creates a subfolder based on repo name)
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+
+# Move into the app folder that was created by git clone
+cd YOUR_REPO
 
 # Or upload your files using SCP/SFTP
 # scp -r /path/to/your/local/project/* ubuntu@your-server-ip:/var/www/crud-backend/
 ```
 
-### Install Dependencies
+### Install Dependencies (run inside the app folder)
 
 ```bash
-cd /var/www/crud-backend
 npm install --production
 ```
 
-### Create Environment File
+### Create Environment File (place it where your app runs)
 
 
 ```bash
-# Create .env file
+# Create .env file in the app folder
 nano .env
 ```
 
@@ -122,16 +124,13 @@ mkdir -p logs
 
 sudo nano /etc/nginx/sites-available/crud-backend
 ```bash
-# Copy the provided nginx configuration
-sudo cp nginx/nodejs-app.conf /etc/nginx/sites-available/crud-backend
-
-# Edit the configuration
+# Create or edit the site config
 sudo nano /etc/nginx/sites-available/crud-backend
 ```
 
-Update the `server_name` in the configuration:
+Update the `server_name` in the configuration (use your IP if no domain):
 ```nginx
-server_name your-domain.com; # Replace with your actual domain
+server_name your-domain.com; # or your.public.ip.address
 ```
 
 ### Enable the Site
@@ -146,7 +145,7 @@ sudo rm /etc/nginx/sites-enabled/default
 # Test Nginx configuration
 sudo nginx -t
 
-# Restart Nginx
+# Restart Nginx (use sudo so no password prompt)
 sudo systemctl restart nginx
 ```
 
